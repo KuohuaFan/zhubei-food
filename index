@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>竹北食堂 — 九降風吹過的餐桌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14273F;        /* 墨靛 */
+  --indigo:#24466E;     /* 藍衫靛 */
+  --indigo-soft:#2E5484;
+  --persimmon:#DE7A34;  /* 柿餅橘 */
+  --rice:#FAF6EE;       /* 米紙 */
+  --straw:#E6DCC6;      /* 稻稈 */
+  --tea:#6B7A5E;        /* 茶綠 */
+  --line:rgba(20,39,63,.14);
+  --sidebar-w:272px;
+  --display:'LXGW WenKai TC',serif;
+  --body:'Noto Sans TC',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:var(--body);
+  background:var(--rice);
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- App shell ---------- */
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;height:100vh;overflow:hidden}
+
+/* ---------- Sidebar ---------- */
+.sidebar{
+  background:linear-gradient(180deg,var(--ink) 0%,var(--indigo) 130%);
+  color:#EDF2F7;
+  display:flex;flex-direction:column;
+  padding:20px 14px 16px;
+  overflow-y:auto;
+}
+.brand{
+  display:flex;align-items:baseline;gap:8px;
+  padding:2px 10px 18px;
+}
+.brand b{font-family:var(--display);font-weight:400;font-size:22px;letter-spacing:2px}
+.brand span{font-size:11px;letter-spacing:3px;color:#9FB3CB}
+.new-chat{
+  display:flex;align-items:center;gap:9px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);
+  color:#F4F0E6;border-radius:10px;
+  padding:9px 12px;font-size:14px;cursor:pointer;
+  font-family:var(--body);width:100%;
+  transition:background .15s;
+}
+.new-chat:hover{background:rgba(255,255,255,.15)}
+.new-chat svg{flex:none}
+.nav-label{
+  font-size:11px;letter-spacing:2px;color:#8DA2BC;
+  margin:22px 10px 6px;user-select:none;
+}
+.nav-item{
+  display:flex;align-items:center;gap:9px;
+  padding:7px 10px;border-radius:8px;
+  font-size:13.5px;color:#D8E1EC;cursor:pointer;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  transition:background .12s;border:none;background:none;width:100%;text-align:left;font-family:var(--body);
+}
+.nav-item:hover{background:rgba(255,255,255,.09)}
+.nav-item.active{background:rgba(222,122,52,.22);color:#FFE4CC}
+.nav-item .dot{width:5px;height:5px;border-radius:50%;background:var(--persimmon);flex:none}
+.nav-item small{margin-left:auto;font-size:11px;color:#8DA2BC}
+.side-foot{
+  margin-top:auto;padding:14px 10px 2px;
+  font-size:11px;color:#7E93AE;letter-spacing:.5px;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+
+/* ---------- Main ---------- */
+.main{position:relative;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth}
+.topbar{
+  position:sticky;top:0;z-index:5;
+  display:flex;align-items:center;gap:12px;
+  padding:14px 34px;
+  background:color-mix(in srgb,var(--rice) 88%,transparent);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.topbar .crumbs{font-size:13px;color:#5B6B80;letter-spacing:1px}
+.menu-btn{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:6px 9px;cursor:pointer;color:var(--ink)}
+
+/* ---------- Hero ---------- */
+.hero{padding:64px 34px 30px;max-width:880px}
+.eyebrow{
+  font-size:12px;letter-spacing:4px;color:var(--tea);
+  margin-bottom:14px;
+}
+h1{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(34px,5vw,54px);
+  line-height:1.25;letter-spacing:2px;
+}
+h1 em{font-style:normal;color:var(--persimmon)}
+.hero p{margin-top:16px;max-width:560px;color:#44556C;font-weight:300}
+
+/* 九降風 — signature wind strokes */
+.wind{position:relative;height:34px;max-width:880px;margin:6px 34px 0;overflow:hidden}
+.wind i{
+  position:absolute;height:1px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--persimmon) 30%,transparent);
+  opacity:.55;animation:blow 7s linear infinite;
+}
+.wind i:nth-child(1){top:8px;width:46%;animation-delay:0s}
+.wind i:nth-child(2){top:17px;width:64%;animation-delay:1.6s;background:linear-gradient(90deg,transparent,var(--indigo) 30%,transparent)}
+.wind i:nth-child(3){top:26px;width:38%;animation-delay:3.4s}
+@keyframes blow{
+  0%{transform:translateX(-70%)}
+  100%{transform:translateX(240%)}
+}
+@media (prefers-reduced-motion:reduce){
+  .wind i{animation:none;transform:none;left:10%}
+}
+
+/* ---------- Categories ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:9px;padding:26px 34px 6px;max-width:880px}
+.chip{
+  border:1px solid var(--line);border-radius:999px;
+  padding:6px 15px;font-size:13px;cursor:pointer;
+  background:transparent;color:var(--ink);font-family:var(--body);
+  transition:all .15s;
+}
+.chip:hover{border-color:var(--indigo);color:var(--indigo)}
+.chip.on{background:var(--indigo);border-color:var(--indigo);color:#FAF6EE}
+
+/* ---------- Cards ---------- */
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:18px;padding:22px 34px 60px;max-width:960px;
+}
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;padding:20px 20px 16px;
+  display:flex;flex-direction:column;gap:8px;
+  transition:transform .18s,box-shadow .18s;
+  position:relative;
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(20,39,63,.10)}
+.card .tag{
+  font-size:11px;letter-spacing:2px;color:var(--tea);
+}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.proj-item{cursor:pointer;transition:background .12s;border-radius:8px}
+.proj-item:hover{background:rgba(36,70,110,.05)}
+.badge{
+  font-size:10.5px;letter-spacing:.5px;border-radius:999px;
+  padding:3px 9px;white-space:nowrap;flex:none;font-weight:500;
+}
+.badge.star{background:#7A1E1E;color:#FFE9C9}
+.badge.bib{background:var(--persimmon);color:#fff}
+.badge.gam{background:#8A2B3C;color:#FDE8EC}
+.badge.ed{background:var(--straw);color:#5A4C2E}
+.card .rec{
+  font-size:12.5px;color:var(--indigo);font-weight:400;
+  border-left:2px solid var(--persimmon);padding-left:9px;flex:none;
+}
+.info-row{
+  display:flex;flex-wrap:wrap;gap:6px 14px;
+  font-size:12px;color:#55677E;flex:none;
+}
+.card-link{
+  font-size:12px;color:var(--indigo);text-decoration:none;
+  border-bottom:1px dashed var(--indigo);margin-right:10px;
+}
+.card-link:hover{color:var(--persimmon);border-color:var(--persimmon)}
+.card h3{font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:1px}
+.card p{font-size:13px;color:#55677E;font-weight:300;flex:1}
+.card .meta{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#7A8AA0;border-top:1px dashed var(--line);padding-top:10px}
+.star-btn{background:none;border:none;cursor:pointer;font-size:16px;color:#B9C4D2;transition:color .15s;line-height:1}
+.star-btn.on{color:var(--persimmon)}
+.demo-note{padding:0 34px 40px;font-size:12px;color:#8A97A8;max-width:880px}
+
+/* ---------- Views (starred / projects) ---------- */
+.view{display:none}
+.view.show{display:block}
+.view-inner{padding:48px 34px 60px;max-width:760px}
+.view-inner h2{font-family:var(--display);font-weight:400;font-size:30px;letter-spacing:2px;margin-bottom:6px}
+.view-inner .sub{color:#5B6B80;font-weight:300;margin-bottom:26px}
+.plain-list{list-style:none}
+.plain-list li{
+  padding:15px 4px;border-bottom:1px solid var(--line);
+  display:flex;align-items:baseline;gap:14px;
+}
+.plain-list li b{font-family:var(--display);font-weight:400;font-size:17px;letter-spacing:1px}
+.plain-list li span{font-size:13px;color:#5B6B80;font-weight:300}
+.plain-list li small{margin-left:auto;font-size:12px;color:#8A97A8;flex:none}
+.empty{color:#8A97A8;font-weight:300;padding:26px 4px}
+
+/* ---------- Chat icon ---------- */
+.chat-fab{
+  position:fixed;right:26px;bottom:26px;z-index:40;
+  width:56px;height:56px;border-radius:50%;
+  background:var(--indigo);color:#FAF6EE;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 24px rgba(20,39,63,.35);
+  transition:transform .15s,background .15s;
+}
+.chat-fab:hover{transform:scale(1.06);background:var(--indigo-soft)}
+.chat-fab svg{width:26px;height:26px}
+
+/* ---------- Immersive chat (no bubbles) ---------- */
+.chat-layer{
+  position:absolute;inset:0;z-index:20;
+  background:var(--rice);
+  display:none;flex-direction:column;
+}
+.chat-layer.open{display:flex}
+.chat-head{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 34px;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--rice) 88%,transparent);
+}
+.chat-head b{font-family:var(--display);font-weight:400;font-size:18px;letter-spacing:2px}
+.chat-head span{font-size:12px;color:#7A8AA0}
+.chat-close{
+  margin-left:auto;background:none;border:1px solid var(--line);
+  border-radius:8px;padding:5px 12px;font-size:13px;cursor:pointer;
+  color:var(--ink);font-family:var(--body);
+}
+.chat-close:hover{border-color:var(--indigo);color:var(--indigo)}
+.key-row{
+  display:none;gap:8px;align-items:center;
+  padding:10px 34px;border-bottom:1px solid var(--line);
+  background:#FFF9EF;
+}
+.key-row.show{display:flex}
+.key-row input{
+  flex:1;border:1px solid var(--line);border-radius:8px;
+  padding:7px 10px;font-family:var(--body);font-size:13px;
+  background:#fff;color:var(--ink);outline:none;
+}
+.key-row input:focus{border-color:var(--indigo)}
+.chat-scroll{flex:1;overflow-y:auto}
+.chat-doc{max-width:680px;margin:0 auto;padding:44px 26px 30px}
+.turn{margin-bottom:34px}
+.turn .who{
+  font-size:11px;letter-spacing:3px;margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
+}
+.turn.user .who{color:var(--tea)}
+.turn.ai .who{color:var(--persimmon)}
+.turn .who::after{
+  content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,currentColor,transparent);opacity:.3;
+}
+.turn.user .text{font-weight:500;font-size:16px;letter-spacing:.3px}
+.turn.ai .text{font-weight:300;font-size:15.5px;color:#2A3B52;white-space:pre-wrap}
+.turn.ai .text strong{font-weight:500;color:var(--ink)}
+.thinking{display:flex;gap:5px;padding:4px 0}
+.thinking i{width:6px;height:6px;border-radius:50%;background:var(--persimmon);opacity:.4;animation:pulse 1.2s infinite}
+.thinking i:nth-child(2){animation-delay:.2s}
+.thinking i:nth-child(3){animation-delay:.4s}
+@keyframes pulse{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:.9;transform:translateY(-3px)}}
+
+.chat-input-wrap{
+  border-top:1px solid var(--line);
+  background:color-mix(in srgb,var(--rice) 92%,#fff);
+  padding:16px 26px 20px;
+}
+.chat-input{
+  max-width:680px;margin:0 auto;display:flex;gap:10px;align-items:flex-end;
+  background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:10px 12px;
+  transition:border-color .15s,box-shadow .15s;
+}
+.chat-input:focus-within{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(36,70,110,.10)}
+.chat-input textarea{
+  flex:1;border:none;outline:none;resize:none;
+  font-family:var(--body);font-size:15px;line-height:1.6;
+  max-height:130px;background:transparent;color:var(--ink);
+}
+.send-btn{
+  background:var(--persimmon);color:#fff;border:none;border-radius:10px;
+  width:38px;height:38px;cursor:pointer;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .15s;
+}
+.send-btn:disabled{opacity:.35;cursor:default}
+.hint{max-width:680px;margin:8px auto 0;font-size:11.5px;color:#93A0B1;text-align:center}
+
+/* ---------- Suggested prompts ---------- */
+.starters{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.starters button{
+  border:1px dashed var(--line);background:transparent;border-radius:10px;
+  padding:8px 13px;font-size:13px;color:#44556C;cursor:pointer;font-family:var(--body);
+  transition:all .15s;
+}
+.starters button:hover{border-color:var(--persimmon);color:var(--persimmon)}
+
+/* ---------- Responsive ---------- */
+@media (max-width:820px){
+  .app{grid-template-columns:1fr}
+  .sidebar{
+    position:fixed;inset:0 30% 0 0;z-index:60;min-width:250px;
+    transform:translateX(-102%);transition:transform .22s ease;
+    box-shadow:14px 0 40px rgba(0,0,0,.25);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .menu-btn{display:inline-flex}
+  .hero,.chips,.grid,.wind,.demo-note,.view-inner{padding-left:20px;padding-right:20px}
+  .topbar{padding:12px 20px}
+  .chat-doc{padding:30px 18px 24px}
+  .chat-head,.chat-input-wrap{padding-left:18px;padding-right:18px}
+}
+.scrim{position:fixed;inset:0;background:rgba(10,20,34,.4);z-index:55;display:none}
+.scrim.show{display:block}
+:focus-visible{outline:2px solid var(--persimmon);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ======= 左側欄 ======= -->
+  <aside class="sidebar" id="sidebar" aria-label="側邊選單">
+    <div class="brand"><b>竹北食堂</b><span>ZHUBEI</span></div>
+
+    <button class="new-chat" id="newChatBtn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      新對話
+    </button>
+
+    <div class="nav-label">記 錄</div>
+    <nav id="historyNav">
+      <button class="nav-item" data-hist="0"><span class="dot"></span>光明商圈晚餐口袋名單</button>
+      <button class="nav-item" data-hist="1"><span class="dot"></span>帶長輩吃客家菜怎麼選</button>
+      <button class="nav-item" data-hist="2"><span class="dot"></span>宵夜：文興路還開著的店</button>
+    </nav>
+
+    <div class="nav-label">已加星號</div>
+    <button class="nav-item" data-view="starred">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+      我的星號店家 <small id="starCount">0</small>
+    </button>
+
+    <div class="nav-label">專 案</div>
+    <button class="nav-item" data-proj="0">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+      米其林巡禮 2026
+    </button>
+    <button class="nav-item" data-proj="1">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+      異國料理地圖
+    </button>
+    <button class="nav-item" data-proj="2">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+      在地經典麵食
+    </button>
+    <button class="nav-item" data-view="home">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>
+      回到首頁
+    </button>
+
+    <div class="side-foot">九降風起・柿餅正甜<br>竹北食堂 © 2026</div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <!-- ======= 主區 ======= -->
+  <main class="main" id="main">
+    <div class="topbar">
+      <button class="menu-btn" id="menuBtn" aria-label="開啟選單">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <span class="crumbs" id="crumbs">竹北食堂 / 精選</span>
+    </div>
+
+    <!-- 首頁 -->
+    <section class="view show" id="view-home">
+      <div class="hero">
+        <div class="eyebrow">新竹縣・竹北市 HSINCHU COUNTY</div>
+        <h1>九降風吹過的餐桌，<br>從<em>客家灶下</em>到深夜麵攤。</h1>
+        <p>2026 年，米其林指南首度落腳新竹縣，第一顆星就亮在竹北。從摘星的江戶前壽司、必比登的新客家蔬食，到光明商圈的一碗牛肉麵——這張餐桌，比你想的更深。</p>
+      </div>
+      <div class="wind" aria-hidden="true"><i></i><i></i><i></i></div>
+
+      <div class="chips" id="chips">
+        <button class="chip on" data-cat="all">全部</button>
+        <button class="chip" data-cat="michelin">米其林・必比登</button>
+        <button class="chip" data-cat="cn">中式</button>
+        <button class="chip" data-cat="jp">日本料理</button>
+        <button class="chip" data-cat="it">義大利</button>
+        <button class="chip" data-cat="sp">西班牙・地中海</button>
+        <button class="chip" data-cat="west">西式・餐酒</button>
+        <button class="chip" data-cat="in">印度</button>
+        <button class="chip" data-cat="veg">蔬食</button>
+      </div>
+
+      <div class="grid" id="grid"></div>
+      <p class="demo-note">＊店家資料整理自《臺灣米其林指南 2026》公開名單與各食評媒體報導（2026 年 8 月）。價位為約略區間、營業資訊可能異動，訂位與菜單請以店家公告為準。「編輯推薦／在地推薦」為本站整理之推薦標記，非官方評鑑。</p>
+    </section>
+
+    <!-- 星號 -->
+    <section class="view" id="view-starred">
+      <div class="view-inner">
+        <h2>已加星號</h2>
+        <p class="sub">你在卡片上點星號的店家，會集中收在這裡。</p>
+        <ul class="plain-list" id="starList"></ul>
+      </div>
+    </section>
+
+    <!-- 專案 -->
+    <section class="view" id="view-projects">
+      <div class="view-inner" id="projWrap"></div>
+    </section>
+
+    <!-- ======= 沈浸式對話層（無氣泡） ======= -->
+    <div class="chat-layer" id="chatLayer" role="dialog" aria-label="美食對話">
+      <div class="chat-head">
+        <b>食通</b><span id="modeBadge">竹北美食嚮導・示範模式</span>
+        <button class="chat-close" id="keyBtn" title="設定 Anthropic API Key">API Key</button>
+        <button class="chat-close" id="chatClose">收起</button>
+      </div>
+      <div class="key-row" id="keyRow">
+        <input type="password" id="keyInput" placeholder="貼上 Anthropic API Key（僅存於本頁記憶體，重新整理即清除）">
+        <button class="chat-close" id="keySave">套用</button>
+        <button class="chat-close" id="keyClear">清除</button>
+      </div>
+      <div class="chat-scroll" id="chatScroll">
+        <div class="chat-doc" id="chatDoc">
+          <div class="turn ai">
+            <div class="who">食 通</div>
+            <div class="text">你好，我是「食通」，竹北的美食嚮導。跟我說人數、預算、想吃的口味，或直接問「今晚吃什麼」，我幫你想。
+            <div class="starters">
+              <button data-q="竹北有哪些米其林推薦的餐廳？">米其林・必比登名單</button>
+              <button data-q="想吃義大利菜，約會和家庭聚餐各推薦哪間？">義大利菜怎麼選</button>
+              <button data-q="西班牙菜和印度料理各推薦哪一間？">西班牙・印度料理</button>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-wrap">
+        <div class="chat-input">
+          <textarea id="chatText" rows="1" placeholder="問問竹北好吃的…（Enter 送出，Shift+Enter 換行）"></textarea>
+          <button class="send-btn" id="sendBtn" aria-label="送出">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+        <div class="hint">回覆僅供參考，店家營業時間請以現場為準。示範模式為內建回覆；連線 Claude 請點右上角 API Key。</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Chat 浮動圖示 -->
+<button class="chat-fab" id="chatFab" aria-label="開啟美食對話">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+    <path d="M21 11.5a8.4 8.4 0 01-8.5 8.3c-1.3 0-2.6-.3-3.7-.8L3 20l1.1-5A8.1 8.1 0 013.9 11.5 8.4 8.4 0 0112.5 3.2 8.4 8.4 0 0121 11.5z"/>
+    <path d="M8.5 10.5v2M12 9.5v3M15.5 10.5v2"/>
+  </svg>
+</button>
+
+<script>
+/* ================= 資料（整理自 2026 米其林指南與公開食評報導） ================= */
+const SHOPS=[
+ {id:1,cats:['michelin','jp'],tag:'日本料理・Omakase',name:'鮨安 Sushi An',
+  badge:'★ 米其林一星 2026',badgeCls:'star',
+  desc:'新竹縣史上第一顆米其林星。主廚許劉安師承小野二郎次子小野隆士，江戶前無菜單握壽司，一場僅六席，另獲 2026 年輕主廚大獎。',
+  rec:'推薦理由：全台唯一壽司之神流派江戶前壽司，需提早預約。',
+  area:'高鐵特區・嘉豐南路一段',price:'$$$$ 無菜單制',
+  links:[['店家資訊','https://www.google.com/maps/search/?api=1&query=%E9%AE%A8%E5%AE%89+%E7%AB%B9%E5%8C%97'],['米其林名單','https://guide.michelin.com/tw/zh_TW/article/michelin-guide-ceremony/taiwan-full-list']]},
+ {id:2,cats:['michelin','veg','hakka'],tag:'新客家蔬食',name:'季風 Monsoon',
+  badge:'必比登推介 2026',badgeCls:'bib',
+  desc:'2025 年自台北士林遷至竹北。客家主廚以創意蔬食重新詮釋經典客家菜，完全預約制。',
+  rec:'推薦理由：米其林評審點名的「新客家菜」代表，蔬食者首選。',
+  area:'竹北市區',price:'$$$ 約 NT$1,000 起',
+  links:[['店家資訊','https://www.google.com/maps/search/?api=1&query=%E5%AD%A3%E9%A2%A8+Monsoon+%E7%AB%B9%E5%8C%97'],['米其林名單','https://guide.michelin.com/tw/zh_TW/article/michelin-guide-ceremony/taiwan-2026-bib-gourmand-list']]},
+ {id:3,cats:['michelin','veg'],tag:'創意蔬食',name:'善菓堂 SHAN GUO TANG',
+  badge:'必比登推介',badgeCls:'bib',
+  desc:'精緻創意蔬食，高質感用餐環境，連年入圍必比登推介與 500 盤。',
+  rec:'推薦理由：宴客、長輩聚餐皆宜的蔬食門面。',
+  area:'竹北市區',price:'$$ 約 NT$500–800／人',
+  links:[['店家資訊','https://www.google.com/maps/search/?api=1&query=%E5%96%84%E8%8F%93%E5%A0%82+%E7%AB%B9%E5%8C%97']]},
+ {id:4,cats:['it','west'],tag:'義大利菜',name:'托斯卡尼尼義大利庭園餐廳',
+  badge:'編輯推薦',badgeCls:'ed',
+  desc:'歐風獨棟中庭花園建築，義大利麵、燉飯、披薩水準穩定，近六家高鐵站與竹北大遠百。',
+  rec:'推薦理由：家庭聚餐、帶長輩小孩最不會出錯的義式選擇。',
+  area:'六家・高鐵特區',price:'$$ 約 NT$750／人',
+  links:[['店家資訊','https://www.google.com/maps/search/?api=1&query=%E6%89%98%E6%96%AF%E5%8D%A1%E5%B0%BC%E5%B0%BC+%E7%AB%B9%E5%8C%97']]},
+ {id:5,cats:['it','west'],tag:'義大利菜・餐酒',name:'彼刻義式餐酒館 Piccola Enoteca',
+  badge:'紅蝦評鑑二蝦',badgeCls:'gam',
+  desc:'多次獲義大利紅蝦評鑑（Gambero Rosso）肯定，自製手工麵條，走精緻限量路線。',
+  rec:'推薦理由：約會與紀念日首選，竹北義式料理天花板。',
+  area:'竹北市區',price:'$$$ 約 NT$1,000／人',
+  links:[['店家資訊','https://www.google.com/maps/search/?api=1&query=%E5%BD%BC%E5%88%BB%E7%BE%A9%E5%BC%8F%E9%A4%90%E9%85%92%E9%A4%A8+%E7%AB%B9%E5%8C%97']]},
+ {id:6,cats:['sp','west'],tag:'西班牙・地中海',name:'紅倉庫歐陸廚房',
+  badge:'編輯推薦',badgeCls:'ed',
+  desc:'挑高華麗的歐陸空間，西班牙與地中海風味菜色，適合多人聚餐分食。週一公休。',
+  rec:'推薦理由：竹北少見的西班牙菜代表，海鮮飯配桑格利亞。',
+  area:'文興路一段 255 號',price:'$$ 約 NT$700／人',
+  links:[['店家資訊','https://www.google.com/maps/search/?api=1&query=%E7%B4%85%E5%80%89%E5%BA%AB%E6%AD%90%E9%99%B8%E5%BB%9A%E6%88%BF+%E7%AB%B9%E5%8C%97']]},
+ {id:7,cats:['west'],tag:'西式・餐酒館',name:'橋下 2.0 Restaurant & Bar',
+  badge:'編輯推薦',badgeCls:'ed',
+  desc:'空間分為咖啡廳區、吧台區與餐廳區；披薩、排餐、燉飯到佐酒小食一應俱全。週二公休。',
+  rec:'推薦理由：從午餐吃到晚酌，一間店涵蓋多種場合。',
+  area:'莊敬北路 268 號',price:'$$ 約 NT$700／人',
+  links:[['店家資訊','https://www.google.com/maps/search/?api=1&query=%E6%A9%8B%E4%B8%8B2.0+%E7%AB%B9%E5%8C%97']]},
+ {id:8,cats:['in'],tag:'印度料理',name:'馬友友印度廚房',
+  badge:'編輯推薦',badgeCls:'ed',
+  desc:'主廚 Mayur 呈現印度各地道地菜色，現烤北印烤餅蘸濃郁咖哩，炭火 Tandoori 烤雞是招牌。',
+  rec:'推薦理由：多人分食、探索香料的最佳場域。',
+  area:'光明一路',price:'$$ 約 NT$400–700／人',
+  links:[['店家資訊','https://www.google.com/maps/search/?api=1&query=%E9%A6%AC%E5%8F%8B%E5%8F%8B%E5%8D%B0%E5%BA%A6%E5%BB%9A%E6%88%BF+%E7%AB%B9%E5%8C%97']]},
+ {id:9,cats:['cn'],tag:'中式・川味',name:'段純貞牛肉麵',
+  badge:'在地推薦',badgeCls:'ed',
+  desc:'發跡於竹北的川味紅燒牛肉麵，湯頭麻香厚實，全台展店的起點就在這裡。',
+  rec:'推薦理由：想認識「竹北味」的第一碗麵。',
+  area:'光明商圈',price:'$ 約 NT$200–350／人',
+  links:[['店家資訊','https://www.google.com/maps/search/?api=1&query=%E6%AE%B5%E7%B4%94%E8%B2%9E%E7%89%9B%E8%82%89%E9%BA%B5+%E7%AB%B9%E5%8C%97']]},
+ {id:10,cats:['cn'],tag:'中式・眷村麵食',name:'十一街麵食館',
+  badge:'在地推薦',badgeCls:'ed',
+  desc:'竹北老字號眷村麵食，炸醬麵與小米粥是招牌，用餐尖峰常客滿。',
+  rec:'推薦理由：在地人從小吃到大的日常味。',
+  area:'文信路周邊',price:'$ 約 NT$150–300／人',
+  links:[['店家資訊','https://www.google.com/maps/search/?api=1&query=%E5%8D%81%E4%B8%80%E8%A1%97%E9%BA%B5%E9%A3%9F%E9%A4%A8+%E7%AB%B9%E5%8C%97']]},
+];
+const HISTORY=[
+ {title:'光明商圈晚餐口袋名單',turns:[
+   ['user','光明商圈附近晚餐有什麼推薦？'],
+   ['ai','光明商圈選擇很密集。想吃湯麵可以走川味牛肉麵路線，湯頭厚、麻香足；想配飯就往客家小炒的方向，薑絲大腸和鹹豬肉都是下飯型。人多的話建議 6:30 前入座，商圈尖峰是 7 點。']]},
+ {title:'帶長輩吃客家菜怎麼選',turns:[
+   ['user','週末帶七十歲長輩吃飯，客家菜哪種比較合適？'],
+   ['ai','長輩通常吃得慣也吃得開心的組合：粄條或湯類主食打底，配一份白斬雞或梅干扣肉，再加一盤炒時蔬。點菜訣竅是「一湯一蒸一炒」，避免全桌重鹹。座位選有靠背椅、離出菜口遠一點的位置更舒服。']]},
+ {title:'宵夜：文興路還開著的店',turns:[
+   ['user','晚上十一點文興路附近還有什麼吃的？'],
+   ['ai','十一點後的竹北選擇會快速收斂，滷味、鹹酥雞和便利商店是主力。想吃熱食建議 00:30 前出門；隔天想吃好一點，可以先把段純貞或十一街排進中午行程。']]},
+];
+
+const PROJECTS=[
+ {title:'米其林巡禮 2026',
+  intro:'2026 年 7 月 21 日《臺灣米其林指南》發布，新竹縣首度摘星，而且就在竹北。這個專案整理竹北三家獲米其林肯定的店，與官方名單連結。',
+  chatQ:'幫我規劃一趟竹北米其林巡禮，三家店該怎麼訂位與安排順序？',
+  entries:[
+   {name:'鮨安 Sushi An',note:'新竹縣史上第一顆米其林一星＋2026 年輕主廚大獎。江戶前無菜單壽司，一場僅六席，位於高鐵特區嘉豐南路一段，需提早預約。',
+    links:[['地圖','https://www.google.com/maps/search/?api=1&query=%E9%AE%A8%E5%AE%89+%E7%AB%B9%E5%8C%97']]},
+   {name:'季風 Monsoon',note:'2026 必比登推介新入選。客家主廚以創意蔬食重新詮釋經典客家菜，2025 年自台北士林遷至竹北，完全預約制。',
+    links:[['地圖','https://www.google.com/maps/search/?api=1&query=%E5%AD%A3%E9%A2%A8+Monsoon+%E7%AB%B9%E5%8C%97']]},
+   {name:'善菓堂 SHAN GUO TANG',note:'必比登推介。精緻創意蔬食，高質感空間，連年入圍 500 盤，宴客與長輩聚餐皆宜。',
+    links:[['地圖','https://www.google.com/maps/search/?api=1&query=%E5%96%84%E8%8F%93%E5%A0%82+%E7%AB%B9%E5%8C%97']]},
+  ],
+  refs:[['米其林 2026 完整名單','https://guide.michelin.com/tw/zh_TW/article/michelin-guide-ceremony/taiwan-full-list'],
+        ['必比登推介名單','https://guide.michelin.com/tw/zh_TW/article/michelin-guide-ceremony/taiwan-2026-bib-gourmand-list'],
+        ['新竹米其林入選餐廳整理','https://margaret.tw/michelin-selected-hsinchu/']]},
+ {title:'異國料理地圖',
+  intro:'不出竹北，吃遍義大利、西班牙、印度。這個專案依「場合」而非菜系排列：家庭聚餐、約會、多人分食，各有對應的店。',
+  chatQ:'我想在竹北吃異國料理，請依家庭聚餐、約會、多人聚會三種場合各推薦一間，並說明理由。',
+  entries:[
+   {name:'托斯卡尼尼義大利庭園餐廳｜家庭聚餐',note:'歐風獨棟中庭花園，義大利麵、燉飯、披薩，約 NT$750／人，近六家高鐵站與大遠百，帶長輩小孩最不出錯。',
+    links:[['地圖','https://www.google.com/maps/search/?api=1&query=%E6%89%98%E6%96%AF%E5%8D%A1%E5%B0%BC%E5%B0%BC+%E7%AB%B9%E5%8C%97']]},
+   {name:'彼刻義式餐酒館｜約會',note:'義大利紅蝦評鑑二蝦，自製手工麵條，精緻限量路線，約 NT$1,000／人。',
+    links:[['地圖','https://www.google.com/maps/search/?api=1&query=%E5%BD%BC%E5%88%BB%E7%BE%A9%E5%BC%8F%E9%A4%90%E9%85%92%E9%A4%A8+%E7%AB%B9%E5%8C%97']]},
+   {name:'紅倉庫歐陸廚房｜西班牙・多人分食',note:'文興路一段 255 號，挑高空間，海鮮飯與地中海菜色，約 NT$700／人，週一公休。',
+    links:[['地圖','https://www.google.com/maps/search/?api=1&query=%E7%B4%85%E5%80%89%E5%BA%AB%E6%AD%90%E9%99%B8%E5%BB%9A%E6%88%BF+%E7%AB%B9%E5%8C%97']]},
+   {name:'馬友友印度廚房｜香料探索',note:'光明一路，現烤北印烤餅蘸咖哩、炭火 Tandoori 烤雞，約 NT$400–700／人，適合多人分食。',
+    links:[['地圖','https://www.google.com/maps/search/?api=1&query=%E9%A6%AC%E5%8F%8B%E5%8F%8B%E5%8D%B0%E5%BA%A6%E5%BB%9A%E6%88%BF+%E7%AB%B9%E5%8C%97']]},
+  ],
+  refs:[['竹北高級餐廳懶人包','https://suni.tw/zhubei-fine-dining/'],
+        ['竹北必吃餐廳攻略','https://www.klook.com/zh-TW/blog/hsinchu-food/']]},
+ {title:'在地經典麵食',
+  intro:'在米其林來之前，竹北人早就有自己的口袋名單。兩碗麵，說完竹北的日常。',
+  chatQ:'段純貞和十一街麵食館各推薦點什麼？什麼時段去比較不用排隊？',
+  entries:[
+   {name:'段純貞牛肉麵',note:'發跡於竹北光明商圈的川味紅燒牛肉麵，湯頭麻香厚實，約 NT$200–350／人，是全台展店的起點。',
+    links:[['地圖','https://www.google.com/maps/search/?api=1&query=%E6%AE%B5%E7%B4%94%E8%B2%9E%E7%89%9B%E8%82%89%E9%BA%B5+%E7%AB%B9%E5%8C%97']]},
+   {name:'十一街麵食館',note:'文信路周邊的老字號眷村麵食，炸醬麵配小米粥，約 NT$150–300／人，用餐尖峰常客滿。',
+    links:[['地圖','https://www.google.com/maps/search/?api=1&query=%E5%8D%81%E4%B8%80%E8%A1%97%E9%BA%B5%E9%A3%9F%E9%A4%A8+%E7%AB%B9%E5%8C%97']]},
+  ],
+  refs:[['竹北美食懶人包','https://gofunit.com/%E7%AB%B9%E5%8C%97%E7%BE%8E%E9%A3%9F%E6%8E%A8%E8%96%A6_%E9%A4%90%E5%BB%B3_%E6%97%A9%E5%8D%88%E9%A4%90_%E4%B8%8B%E5%8D%88%E8%8C%B6_%E9%A4%90%E9%85%92%E9%A4%A8/']]},
+];
+
+/* ================= 狀態 ================= */
+let starred=new Set();
+let chatHistory=[]; // {role, content}
+const $=id=>document.getElementById(id);
+
+/* ================= 卡片 ================= */
+function renderGrid(cat='all'){
+  const g=$('grid');g.innerHTML='';
+  SHOPS.filter(s=>cat==='all'||s.cats.includes(cat)).forEach(s=>{
+    const el=document.createElement('div');el.className='card';
+    const links=s.links.map(([t,u])=>`<a class="card-link" href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join('');
+    el.innerHTML=`
+      <div class="card-top"><span class="tag">${s.tag}</span><span class="badge ${s.badgeCls}">${s.badge}</span></div>
+      <h3>${s.name}</h3>
+      <p>${s.desc}</p>
+      <p class="rec">${s.rec}</p>
+      <div class="info-row"><span>📍 ${s.area}</span><span>💰 ${s.price}</span></div>
+      <div class="meta">
+        <span class="links">${links}</span>
+        <button class="star-btn ${starred.has(s.id)?'on':''}" data-star="${s.id}" aria-label="加入星號">★</button>
+      </div>`;
+    g.appendChild(el);
+  });
+}
+renderGrid();
+
+document.addEventListener('click',e=>{
+  const sb=e.target.closest('[data-star]');
+  if(sb){
+    const id=+sb.dataset.star;
+    starred.has(id)?starred.delete(id):starred.add(id);
+    sb.classList.toggle('on');
+    $('starCount').textContent=starred.size;
+    renderStarList();
+  }
+});
+function renderStarList(){
+  const ul=$('starList');ul.innerHTML='';
+  if(!starred.size){ul.innerHTML='<li class="empty">還沒有星號店家。回首頁，在卡片右下角點 ★ 收藏。</li>';return;}
+  [...starred].map(id=>SHOPS.find(s=>s.id===id)).forEach(s=>{
+    const li=document.createElement('li');
+    li.innerHTML=`<b>${s.name}</b><span>${s.tag}・${s.badge}・${s.price}</span><small>${s.area}</small>`;
+    ul.appendChild(li);
+  });
+}
+renderStarList();
+
+/* ================= 分類 chips ================= */
+$('chips').addEventListener('click',e=>{
+  const c=e.target.closest('.chip');if(!c)return;
+  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));
+  c.classList.add('on');renderGrid(c.dataset.cat);
+});
+
+/* ================= 專案 ================= */
+function renderProjectList(){
+  const w=$('projWrap');
+  w.innerHTML=`<h2>專案</h2>
+    <p class="sub">把一個吃的主題經營成一個專案：店家、筆記、延伸閱讀與 AI 對話都放在一起。點擊任一專案展開內容。</p>
+    <ul class="plain-list">`+
+    PROJECTS.map((p,i)=>`<li class="proj-item" data-open-proj="${i}" role="button" tabindex="0">
+      <b>${p.title}</b><span>${p.intro.slice(0,38)}…</span><small>${p.entries.length} 間店・${p.refs.length} 篇延伸</small></li>`).join('')
+    +`</ul>`;
+}
+function renderProjectDetail(i){
+  const p=PROJECTS[i];
+  const w=$('projWrap');
+  w.innerHTML=`
+    <button class="chat-close" data-view-btn="projects" style="margin-bottom:18px">← 返回專案列表</button>
+    <h2>${p.title}</h2>
+    <p class="sub">${p.intro}</p>
+    <ul class="plain-list">`+
+    p.entries.map(e=>`<li style="flex-direction:column;align-items:flex-start;gap:6px">
+      <b>${e.name}</b><span>${e.note}</span>
+      <span>${e.links.map(([t,u])=>`<a class="card-link" href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join('')}</span></li>`).join('')
+    +`</ul>
+    <p class="sub" style="margin-top:26px;margin-bottom:8px"><b>延伸閱讀</b></p>
+    <p>${p.refs.map(([t,u])=>`<a class="card-link" href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join(' ')}</p>
+    <button class="new-chat" data-proj-chat="${i}" style="margin-top:26px;background:var(--indigo);border-color:var(--indigo);max-width:320px">
+      💬 和食通聊「${p.title}」
+    </button>`;
+  showView('projects',false);
+}
+document.addEventListener('click',e=>{
+  const op=e.target.closest('[data-open-proj]');
+  if(op){renderProjectDetail(+op.dataset.openProj);return;}
+  const vb=e.target.closest('[data-view-btn]');
+  if(vb){renderProjectList();showView('projects',false);return;}
+  const pc=e.target.closest('[data-proj-chat]');
+  if(pc){
+    const p=PROJECTS[+pc.dataset.projChat];
+    $('chatLayer').classList.add('open');
+    send(p.chatQ);
+  }
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){const op=e.target.closest&&e.target.closest('[data-open-proj]');if(op)renderProjectDetail(+op.dataset.openProj);}
+});
+document.querySelectorAll('[data-proj]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    renderProjectDetail(+b.dataset.proj);
+    document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    closeSidebar();
+  });
+});
+
+/* ================= 視圖切換 ================= */
+function showView(name,resetProj=true){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
+  $('view-'+name).classList.add('show');
+  $('chatLayer').classList.remove('open');
+  $('crumbs').textContent='竹北食堂 / '+({home:'精選',starred:'已加星號',projects:'專案'}[name]);
+  if(name==='projects'&&resetProj)renderProjectList();
+  closeSidebar();
+}
+renderProjectList();
+document.querySelectorAll('[data-view]').forEach(b=>{
+  b.addEventListener('click',()=>showView(b.dataset.view));
+});
+
+/* ================= 側欄（手機） ================= */
+function closeSidebar(){$('sidebar').classList.remove('open');$('scrim').classList.remove('show')}
+$('menuBtn').addEventListener('click',()=>{$('sidebar').classList.add('open');$('scrim').classList.add('show')});
+$('scrim').addEventListener('click',closeSidebar);
+
+/* ================= 沈浸式對話 ================= */
+const SYSTEM_PROMPT=`你是「食通」，台灣新竹縣竹北市的在地美食嚮導。
+已查證的在地事實（2026年8月）：
+- 鮨安 Sushi An：竹北高鐵特區嘉豐南路一段，2026年獲新竹縣史上第一顆米其林一星，主廚許劉安另獲年輕主廚大獎；江戶前無菜單壽司，一場僅六席，需預約。
+- 季風 Monsoon：2026 米其林必比登推介，新客家蔬食，完全預約制。
+- 善菓堂：竹北創意蔬食，必比登推介。
+- 彼刻義式餐酒館：義大利紅蝦評鑑二蝦，約千元/人。
+- 托斯卡尼尼義大利庭園餐廳（六家，約750/人）、紅倉庫歐陸廚房（西班牙菜，文興路，約700/人）、橋下2.0餐酒館（莊敬北路，約700/人）、馬友友印度廚房（光明一路，北印料理）、段純貞牛肉麵（發跡竹北）、十一街麵食館（眷村麵食）。
+規則：
+1. 一律使用台灣繁體中文，語氣像熟門熟路的在地朋友，親切但不油。
+2. 優先引用上述已查證店家；其他店家可談但要註明資訊可能過時。
+3. 給建議時說明「為什麼」：口味、價位帶、適合的場合與人數。
+4. 不確定的營業資訊要坦白說不確定，提醒以店家公告為準；不要編造地址與電話。
+5. 回答保持精煉：一般問題 150 字內，行程規劃可長一些，用短段落。`;
+
+function addTurn(role,text,thinking=false){
+  const doc=$('chatDoc');
+  const div=document.createElement('div');
+  div.className='turn '+(role==='user'?'user':'ai');
+  div.innerHTML=`<div class="who">${role==='user'?'你':'食 通'}</div>
+    <div class="text">${thinking?'<div class="thinking"><i></i><i></i><i></i></div>':escapeHtml(text)}</div>`;
+  doc.appendChild(div);
+  $('chatScroll').scrollTop=$('chatScroll').scrollHeight;
+  return div;
+}
+function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+
+/* ---- API Key（僅存於記憶體，重新整理即清除） ---- */
+let apiKey='';
+$('keyBtn').addEventListener('click',()=>$('keyRow').classList.toggle('show'));
+$('keySave').addEventListener('click',()=>{
+  apiKey=$('keyInput').value.trim();
+  $('modeBadge').textContent=apiKey?'竹北美食嚮導・AI 已連線':'竹北美食嚮導・示範模式';
+  $('keyRow').classList.remove('show');
+});
+$('keyClear').addEventListener('click',()=>{
+  apiKey='';$('keyInput').value='';
+  $('modeBadge').textContent='竹北美食嚮導・示範模式';
+});
+
+/* ---- 內建示範回覆（無 API Key 時使用） ---- */
+function localAnswer(q){
+  const rules=[
+    [/米其林|摘星|必比登/, '竹北在 2026 年正式摘下新竹縣第一顆米其林星：「鮨安」的江戶前無菜單壽司（高鐵特區，一場僅六席，務必提早預約）。必比登推介則有新客家蔬食「季風 Monsoon」與創意蔬食「善菓堂」，都是預約制或熱門店，建議先訂位。'],
+    [/客家|蔬食|素/, '想吃客家與蔬食路線，首選必比登推介的「季風 Monsoon」——客家主廚用蔬食重新詮釋經典客家菜，完全預約制；「善菓堂」則適合宴客與長輩聚餐，環境精緻。'],
+    [/義大利|義式|披薩|燉飯/, '義式兩條路線：家庭聚餐選「托斯卡尼尼」（六家高鐵旁歐風獨棟，約750/人）；約會紀念日選「彼刻義式餐酒館」（紅蝦評鑑二蝦，自製麵條，約千元/人，走精緻限量路線）。'],
+    [/西班牙|地中海|海鮮飯/, '西班牙菜代表是文興路的「紅倉庫歐陸廚房」，挑高空間適合多人分食海鮮飯，約700/人，週一公休。想配酒聊晚一點可考慮莊敬北路的「橋下2.0」餐酒館。'],
+    [/印度|咖哩|烤餅/, '印度料理找光明一路的「馬友友印度廚房」：現烤北印烤餅蘸咖哩、炭火 Tandoori 烤雞，適合多人分食，約400–700/人。'],
+    [/牛肉麵|中式|麵/, '「段純貞牛肉麵」發跡於竹北，川味紅燒湯頭麻香厚實，是認識竹北味的第一碗；眷村口味則到「十一街麵食館」吃炸醬麵配小米粥，尖峰時段常客滿。'],
+    [/約會|紀念日|求婚/, '約會建議「彼刻義式餐酒館」（紅蝦評鑑、氣氛佳）或直上「鮨安」壽司（米其林一星，六席板前，儀式感滿分但要搶位）。'],
+    [/小孩|親子|家庭|長輩/, '家庭聚餐首選「托斯卡尼尼」義大利庭園餐廳，空間大、菜色接受度高；長輩偏好清淡可選「善菓堂」蔬食。'],
+    [/路線|半日|行程/, '半日吃貨路線：中午十一街麵食館眷村麵 → 下午光明商圈散步 → 晚餐依預算二選一：紅倉庫西班牙菜（聚餐）或彼刻義式（約會）。想衝米其林請提早數週訂鮨安。'],
+  ];
+  for(const [re,ans] of rules){ if(re.test(q)) return ans; }
+  return '這題我先給通用建議：跟我說人數、預算與口味偏好（米其林／中式／義式／西班牙／印度／蔬食），我可以更精準。若要即時 AI 回覆，請點右上角「API Key」連線 Claude。';
+}
+
+async function callClaude(){
+  const body={model:'claude-sonnet-4-6',max_tokens:1000,system:SYSTEM_PROMPT,messages:chatHistory};
+  /* 第一段：免金鑰直連（在 Claude.ai 預覽環境中由平台代理，可直接使用） */
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d=await r.json();
+    if(!d.error&&d.content){$('modeBadge').textContent='竹北美食嚮導・AI 已連線';return d;}
+  }catch(e){/* 進入第二段 */}
+  /* 第二段：使用者提供的 API Key（GitHub Pages 等外部部署環境） */
+  if(apiKey){
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,
+        'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify(body)});
+    const d=await r.json();
+    if(d.error)throw new Error(d.error.message||'API error');
+    return d;
+  }
+  return null; /* 第三段：呼叫端退回示範回覆 */
+}
+
+async function send(text){
+  if(!text.trim())return;
+  addTurn('user',text);
+  chatHistory.push({role:'user',content:text});
+  const pending=addTurn('ai','',true);
+  $('sendBtn').disabled=true;
+  try{
+    const data=await callClaude();
+    if(data){
+      const reply=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n').trim()
+        ||'（暫時沒有回應，再試一次看看。）';
+      pending.querySelector('.text').textContent=reply;
+      chatHistory.push({role:'assistant',content:reply});
+    }else{
+      /* 示範模式：本地規則回覆 */
+      await new Promise(r=>setTimeout(r,400));
+      const reply=localAnswer(text);
+      pending.querySelector('.text').textContent=reply;
+      chatHistory.push({role:'assistant',content:reply});
+    }
+  }catch(err){
+    pending.querySelector('.text').textContent='連線失敗：'+(err.message||'請稍後再試')+'。請確認 API Key 是否有效，或直接再送一次改用示範回覆。';
+    chatHistory.pop(); /* 移除失敗的這輪 user 訊息以便重送 */
+  }
+  $('sendBtn').disabled=false;
+  $('chatScroll').scrollTop=$('chatScroll').scrollHeight;
+}
+
+$('chatFab').addEventListener('click',()=>{$('chatLayer').classList.add('open');$('chatText').focus()});
+$('chatClose').addEventListener('click',()=>$('chatLayer').classList.remove('open'));
+$('sendBtn').addEventListener('click',()=>{const t=$('chatText').value;$('chatText').value='';autoGrow();send(t)});
+$('chatText').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();const t=e.target.value;e.target.value='';autoGrow();send(t)}
+});
+function autoGrow(){const t=$('chatText');t.style.height='auto';t.style.height=Math.min(t.scrollHeight,130)+'px'}
+$('chatText').addEventListener('input',autoGrow);
+
+/* 建議提問 */
+document.addEventListener('click',e=>{
+  const q=e.target.closest('[data-q]');
+  if(q){send(q.dataset.q)}
+});
+
+/* 新對話 */
+$('newChatBtn').addEventListener('click',()=>{
+  chatHistory=[];
+  resetChatDoc();
+  $('chatLayer').classList.add('open');
+  closeSidebar();
+  $('chatText').focus();
+});
+function resetChatDoc(){
+  $('chatDoc').innerHTML=`
+    <div class="turn ai">
+      <div class="who">食 通</div>
+      <div class="text">新的一輪。今天想吃什麼路線？客家、麵食、宵夜，還是甜的？
+      <div class="starters">
+        <button data-q="竹北有哪些米其林推薦的餐廳？">米其林・必比登名單</button>
+        <button data-q="想吃義大利菜，約會和家庭聚餐各推薦哪間？">義大利菜怎麼選</button>
+        <button data-q="幫我排一條竹北半日吃貨路線">半日吃貨路線</button>
+      </div></div>
+    </div>`;
+}
+
+/* 記錄：載入示範對話 */
+document.querySelectorAll('[data-hist]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const h=HISTORY[+b.dataset.hist];
+    chatHistory=h.turns.map(([r,c])=>({role:r==='user'?'user':'assistant',content:c}));
+    $('chatDoc').innerHTML='';
+    h.turns.forEach(([r,c])=>addTurn(r,c));
+    document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    $('chatLayer').classList.add('open');
+    closeSidebar();
+  });
+});
+</script>
+</body>
+</html>
